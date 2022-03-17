@@ -13,6 +13,7 @@ namespace PokeMen
         private SpriteBatch _spriteBatch;
 
         private Player playerSprite;
+        private Player playerSprite2;
 
         private Building home1;
         private Building home2;
@@ -39,7 +40,7 @@ namespace PokeMen
         private Tree[] treeRow3 = new Tree[14];
 
         private List<Tree> treeObjects = new List<Tree>();
-
+        private List<Building> buildings = new List<Building>();
         private Texture2D loadTexture;
 
         private InputManager iManager = new InputManager();
@@ -73,15 +74,16 @@ namespace PokeMen
 
             loadTexture = Content.Load<Texture2D>("Player_M");
             playerSprite = new Player(loadTexture, new Vector2(400, 400), new Vector2(30,50));
-
+            playerSprite2 = new Player(loadTexture, new Vector2(430, 400), new Vector2(30, 50));
 
             loadTexture = Content.Load<Texture2D>("House");
             home1 = new Building(loadTexture, new Vector2(150, 150), new Vector2(150, 150));
             home2 = new Building(loadTexture, new Vector2(500, 150), new Vector2(150, 150));
-
+            buildings.Add(home1);
+            buildings.Add(home2);
             loadTexture = Content.Load<Texture2D>("Lab");
             lab = new Building(loadTexture, new Vector2(475,400), new Vector2(200,150));
-
+            buildings.Add(lab);
 
 
             loadTexture = Content.Load<Texture2D>("Sign_Little");
@@ -243,12 +245,23 @@ namespace PokeMen
                 Exit();
 
             iManager.checkKeyboard(playerSprite);
+            iManager.checkKeyboard(playerSprite2);
 
             foreach (Tree t in treeObjects)
             {
                 pManager.checkCollision(playerSprite, t);
             }
-
+            foreach (Building b in buildings)
+            {
+                pManager.checkCollision(playerSprite, b);
+            }
+            if (playerSprite.clone == true)
+            {
+                foreach (Tree t in treeObjects)
+                {
+                    pManager.checkCollision(playerSprite2, t);
+                }
+            }
 
             
 
@@ -292,7 +305,11 @@ namespace PokeMen
             postbox2.DrawSprite(_spriteBatch, postbox2.spriteTexture);
 
             playerSprite.DrawSprite(_spriteBatch, playerSprite.spriteTexture);
-            
+            if (playerSprite.clone == true)
+            {
+                playerSprite2.DrawSprite(_spriteBatch, playerSprite.spriteTexture);
+
+            }
 
             base.Draw(gameTime);
         }
