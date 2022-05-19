@@ -37,14 +37,7 @@ namespace PokeMen
             {
                 playerSprite.goingDown = true;
             }
-            if (state.IsKeyDown(Keys.C))
-            {
-                playerSprite.clone = true;
-            }
-            if (state.IsKeyDown(Keys.N))
-            {
-                playerSprite.clone = false;
-            }
+          
         }
 
 

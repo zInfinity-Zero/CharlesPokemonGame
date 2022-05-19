@@ -28,11 +28,11 @@ namespace PokeMen
         }
 
 
-        public void DrawSprite(SpriteBatch s, Texture2D t)
+        public void DrawSprite(SpriteBatch s, Texture2D t, Camera camera)
         {
             spriteTexture = t;
 
-            s.Begin();
+            s.Begin(transformMatrix: camera.Transform);
 
             s.Draw(spriteTexture, new Rectangle((int)spritePosition.X, (int)spritePosition.Y, (int)spriteSize.X, (int)spriteSize.Y), spriteColor);
 

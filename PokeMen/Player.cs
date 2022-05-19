@@ -18,7 +18,6 @@ namespace PokeMen
         public bool goingRight;
         public bool goingUp;
         public bool goingDown;
-        public bool clone { get; set; }
 
         public Player(Texture2D tex, Vector2 pos, Vector2 size) : base(tex, pos, size)
         {

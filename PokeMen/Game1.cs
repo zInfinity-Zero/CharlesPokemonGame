@@ -13,7 +13,6 @@ namespace PokeMen
         private SpriteBatch _spriteBatch;
 
         private Player playerSprite;
-        private Player playerSprite2;
 
         private Building home1;
         private Building home2;
@@ -45,9 +44,14 @@ namespace PokeMen
 
         private InputManager iManager = new InputManager();
         private PhysicsManager pManager = new PhysicsManager();
+        private Camera camera;
 
+        private bool battle = false;
 
+        private Jokemon user;
+        private Jokemon enemy;
 
+        private Text text = new Text();
 
 
         public Game1()
@@ -71,18 +75,20 @@ namespace PokeMen
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            //SpriteFont font = Content.Load<SpriteFont>("File");//create a file font
+            //text = new Text(font, "Play", new Vector2((Window.ClientBounds.X / 2) - 50, (Window.ClientBounds.Y / 3) + 25), Color.Black);
 
+            camera = new Camera();
             loadTexture = Content.Load<Texture2D>("Player_M");
             playerSprite = new Player(loadTexture, new Vector2(400, 400), new Vector2(30,50));
-            playerSprite2 = new Player(loadTexture, new Vector2(430, 400), new Vector2(30, 50));
 
             loadTexture = Content.Load<Texture2D>("House");
-            home1 = new Building(loadTexture, new Vector2(150, 150), new Vector2(150, 150));
-            home2 = new Building(loadTexture, new Vector2(500, 150), new Vector2(150, 150));
+            home1 = new Building(loadTexture, new Vector2(200, 200), new Vector2(150, 150));
+            home2 = new Building(loadTexture, new Vector2(500, 200), new Vector2(150, 150));
             buildings.Add(home1);
             buildings.Add(home2);
             loadTexture = Content.Load<Texture2D>("Lab");
-            lab = new Building(loadTexture, new Vector2(475,400), new Vector2(200,150));
+            lab = new Building(loadTexture, new Vector2(475,450), new Vector2(200,150));
             buildings.Add(lab);
 
 
@@ -94,7 +100,7 @@ namespace PokeMen
 
             loadTexture = Content.Load<Texture2D>("Sign_Big");
             sign2 = new ReadableObject(loadTexture, new Vector2(290, 475), new Vector2(25,25));
-            sign3 = new ReadableObject(loadTexture, new Vector2(565, 600), new Vector2(25,25));
+            sign3 = new ReadableObject(loadTexture, new Vector2(565, 625), new Vector2(25,25));
 
 
             loadTexture = Content.Load<Texture2D>("Postbox");
@@ -151,7 +157,7 @@ namespace PokeMen
             }
 
             posX = 0;
-            posY = 600;
+            posY = 625;
             xOffset = 475;
 
             for (int i = 0; i < hedgeRow2.Length; i++)
@@ -237,29 +243,40 @@ namespace PokeMen
 
             }
 
+            loadTexture = Content.Load<Texture2D>("Tree_Big");//vegeta back view
+            user = new Jokemon(loadTexture,new Vector2(0,0), new Vector2(300,300), 100, 10, 10, 10, 10, 5, "Iron Tail", "Nuzzle", "Normal Attack", "Sneeze");
+            loadTexture = Content.Load<Texture2D>("Tree_Big");//frieza front view
+            enemy = new Jokemon(loadTexture, new Vector2(500, 500), new Vector2(300, 300), 100, 10, 10, 10, 10, 5, "Iron Tail", "Nuzzle", "Normal Attack", "Sneeze");
+
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (!battle)
+            {
+                camera.Follow(playerSprite);
+                iManager.checkKeyboard(playerSprite);
 
-            iManager.checkKeyboard(playerSprite);
-            iManager.checkKeyboard(playerSprite2);
-
-            foreach (Tree t in treeObjects)
-            {
-                pManager.checkCollision(playerSprite, t);
-            }
-            foreach (Building b in buildings)
-            {
-                pManager.checkCollision(playerSprite, b);
-            }
-            if (playerSprite.clone == true)
-            {
                 foreach (Tree t in treeObjects)
                 {
-                    pManager.checkCollision(playerSprite2, t);
+                    pManager.checkCollision(playerSprite, t);
+                }
+                foreach (Building b in buildings)
+                {
+                    pManager.checkCollision(playerSprite, b);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.T))
+                {
+                    battle = true;
+                }
+            }
+            else if (battle)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Y))
+                {
+                    battle = false;
                 }
             }
 
@@ -271,46 +288,50 @@ namespace PokeMen
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.MediumSpringGreen);
-
-            foreach (Tree t in treeObjects)
+            if (!battle)
             {
-                t.DrawSprite(_spriteBatch, t.spriteTexture);
+                GraphicsDevice.Clear(Color.MediumSpringGreen);
+
+                foreach (Tree t in treeObjects)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture,camera);
+                }
+
+
+                foreach (Tree t in hedgeRow1)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+                foreach (Tree t in hedgeRow2)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+
+                foreach (Sprite f in flowerRow)
+                {
+                    f.DrawSprite(_spriteBatch, f.spriteTexture, camera);
+                }
+
+
+
+                home1.DrawSprite(_spriteBatch, home1.spriteTexture, camera);
+                home2.DrawSprite(_spriteBatch, home2.spriteTexture, camera);
+                lab.DrawSprite(_spriteBatch, lab.spriteTexture, camera);
+                sign1.DrawSprite(_spriteBatch, sign1.spriteTexture, camera);
+                sign2.DrawSprite(_spriteBatch, sign2.spriteTexture, camera);
+                sign3.DrawSprite(_spriteBatch, sign3.spriteTexture, camera);
+                postbox1.DrawSprite(_spriteBatch, postbox1.spriteTexture, camera);
+                postbox2.DrawSprite(_spriteBatch, postbox2.spriteTexture, camera);
+
+                playerSprite.DrawSprite(_spriteBatch, playerSprite.spriteTexture, camera);
+
             }
-
-
-            foreach (Tree t in hedgeRow1)
+            else
             {
-                t.DrawSprite(_spriteBatch, t.spriteTexture);
-            }
-            foreach (Tree t in hedgeRow2)
-            {
-                t.DrawSprite(_spriteBatch, t.spriteTexture);
-            }
-
-            foreach ( Sprite f in flowerRow)
-            {
-                f.DrawSprite(_spriteBatch, f.spriteTexture);
-            }
-
-
-
-            home1.DrawSprite(_spriteBatch, home1.spriteTexture);
-            home2.DrawSprite(_spriteBatch, home2.spriteTexture);
-            lab.DrawSprite(_spriteBatch, lab.spriteTexture);
-            sign1.DrawSprite(_spriteBatch, sign1.spriteTexture);
-            sign2.DrawSprite(_spriteBatch, sign2.spriteTexture);
-            sign3.DrawSprite(_spriteBatch, sign3.spriteTexture);
-            postbox1.DrawSprite(_spriteBatch, postbox1.spriteTexture);
-            postbox2.DrawSprite(_spriteBatch, postbox2.spriteTexture);
-
-            playerSprite.DrawSprite(_spriteBatch, playerSprite.spriteTexture);
-            if (playerSprite.clone == true)
-            {
-                playerSprite2.DrawSprite(_spriteBatch, playerSprite.spriteTexture);
+                GraphicsDevice.Clear(Color.Black);
+                //text.DrawText(_spriteBatch);
 
             }
-
             base.Draw(gameTime);
         }
 

@@ -93,6 +93,9 @@ namespace PokeMen
                 {
                     goUp(p);
                     p.hasCollidedBottom = false;
+                    p.hasCollidedLeft = false;
+                    p.hasCollidedRight = false;
+
                 }
             }
 
@@ -108,6 +111,8 @@ namespace PokeMen
                 {
                     goDown(p);
                     p.hasCollidedTop = false;
+                    p.hasCollidedLeft = false;
+                    p.hasCollidedRight = false;
 
                 }
             }
@@ -123,6 +128,8 @@ namespace PokeMen
                 {
                     goLeft(p);
                     p.hasCollidedRight = false;
+                    p.hasCollidedTop= false;
+                    p.hasCollidedBottom = false;
                 }
             }
             else if (p.goingRight)
@@ -137,13 +144,15 @@ namespace PokeMen
                 {
                     goRight(p);
                     p.hasCollidedLeft = false;
+                    p.hasCollidedTop = false;
+                    p.hasCollidedBottom = false;
 
                 }
 
             }
         }
 
-            public void goLeft(Player playerSprite)
+        public void goLeft(Player playerSprite)
         {
             playerSprite.spritePosition = new Vector2(playerSprite.spritePosition.X - speed, playerSprite.spritePosition.Y);
         }
