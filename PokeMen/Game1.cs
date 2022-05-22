@@ -75,11 +75,11 @@ namespace PokeMen
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            //SpriteFont font = Content.Load<SpriteFont>("File");//create a file font
-            //text = new Text(font, "Play", new Vector2((Window.ClientBounds.X / 2) - 50, (Window.ClientBounds.Y / 3) + 25), Color.Black);
+            SpriteFont font = Content.Load<SpriteFont>("File");
+            text = new Text(font, "Play", new Vector2((Window.ClientBounds.X / 2) - 50, (Window.ClientBounds.Y / 3) + 25), Color.Black);
 
             camera = new Camera();
-            loadTexture = Content.Load<Texture2D>("Player_M");
+            loadTexture = Content.Load<Texture2D>("player");
             playerSprite = new Player(loadTexture, new Vector2(400, 400), new Vector2(30,50));
 
             loadTexture = Content.Load<Texture2D>("House");
@@ -329,7 +329,7 @@ namespace PokeMen
             else
             {
                 GraphicsDevice.Clear(Color.Black);
-                //text.DrawText(_spriteBatch);
+                text.DrawText(_spriteBatch);
 
             }
             base.Draw(gameTime);
