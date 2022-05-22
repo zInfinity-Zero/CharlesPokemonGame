@@ -37,7 +37,8 @@ namespace PokeMen
             {
                 playerSprite.goingDown = true;
             }
-          
+ 
+
         }
 
 

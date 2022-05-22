@@ -18,10 +18,15 @@ namespace PokeMen
         public bool goingRight;
         public bool goingUp;
         public bool goingDown;
+        public bool moveright = false;
+        public bool moveleft = false;
+        public Texture2D spriteTexture2 { get; set; }
+        public Texture2D spriteTexture { get; set; }
 
-        public Player(Texture2D tex, Vector2 pos, Vector2 size) : base(tex, pos, size)
+        public Player(Texture2D tex,Texture2D tex2, Vector2 pos, Vector2 size) : base(tex, pos, size)
         {
-          
+            spriteTexture = tex;
+            spriteTexture2 = tex2;
         }
 
     }

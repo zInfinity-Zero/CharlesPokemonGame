@@ -32,7 +32,7 @@ namespace PokeMen
         {
             spriteTexture = t;
 
-            s.Begin(transformMatrix: camera.Transform);
+            s.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,null,null,null,null,  camera.Transform);
 
             s.Draw(spriteTexture, new Rectangle((int)spritePosition.X, (int)spritePosition.Y, (int)spriteSize.X, (int)spriteSize.Y), spriteColor);
 
@@ -41,6 +41,18 @@ namespace PokeMen
 
         }
 
+        public void DrawSpriteNoZoom(SpriteBatch s, Texture2D t)
+        {
+            spriteTexture = t;
+
+            s.Begin();
+
+            s.Draw(spriteTexture, new Rectangle((int)spritePosition.X, (int)spritePosition.Y, (int)spriteSize.X, (int)spriteSize.Y), spriteColor);
+
+            s.End();
+
+
+        }
 
 
 
