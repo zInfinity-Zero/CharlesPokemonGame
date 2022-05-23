@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace PokeMen
+namespace CharlesPokemon
 {
     public class Game1 : Game
     {
@@ -48,6 +48,13 @@ namespace PokeMen
         private Texture2D loadTexture;
         private Texture2D playerleft;
         private Texture2D playerright;
+        private Texture2D atkt;
+        private Texture2D mirrort;
+        private Texture2D storet;
+        private Texture2D visiont;
+        private Texture2D dodget;
+        private Texture2D raget;
+
 
 
         private InputManager iManager = new InputManager();
@@ -67,6 +74,8 @@ namespace PokeMen
         private Text enemyattack;
         private Text userdefense;
         private Text enemydefense;
+        private Text userdodge;
+        private Text enemydodge;
 
         private Sprite textbox;
         private Sprite skillbox1, skillbox2, skillbox3, skillbox4, skillbox5, skillbox6;
@@ -75,7 +84,7 @@ namespace PokeMen
         private HealthBar healthbar;
         private HealthBar enemyhealthbar;
 
-
+        private BattleSystem battlesystem = new BattleSystem();
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -283,19 +292,32 @@ namespace PokeMen
             sign2text = new Text(font, "This is sign 2", new Vector2(50, 650), Color.White);
             sign3text = new Text(font, "This is sign 3", new Vector2(50, 650), Color.White);
 
-            loadTexture = Content.Load<Texture2D>("SKILLBOX");
-            skillbox1 = new Sprite(loadTexture, new Vector2(10,10), new Vector2(100, 100));
-            skillbox2 = new Sprite(loadTexture, new Vector2(120, 10), new Vector2(100, 100));
-            skillbox3 = new Sprite(loadTexture, new Vector2(10, 120), new Vector2(100, 100));
-            skillbox4 = new Sprite(loadTexture, new Vector2(10, 690), new Vector2(100, 100));
-            skillbox5 = new Sprite(loadTexture, new Vector2(10, 580), new Vector2(100, 100));
-            skillbox6 = new Sprite(loadTexture, new Vector2(120, 690), new Vector2(100, 100));
+            atkt = Content.Load<Texture2D>("ATK");
+            skillbox1 = new Sprite(atkt, new Vector2(10,10), new Vector2(100, 100));
+            
+            mirrort = Content.Load<Texture2D>("Mirror");
+            skillbox2 = new Sprite(mirrort, new Vector2(120, 10), new Vector2(100, 100));
+            storet = Content.Load<Texture2D>("Store");
+
+            skillbox3 = new Sprite(storet, new Vector2(10, 120), new Vector2(100, 100));
+            visiont = Content.Load<Texture2D>("Vision");
+
+            skillbox4 = new Sprite(visiont, new Vector2(10, 690), new Vector2(100, 100));
+            dodget = Content.Load<Texture2D>("Dodge");
+
+            skillbox5 = new Sprite(dodget, new Vector2(10, 580), new Vector2(100, 100));
+            raget = Content.Load<Texture2D>("Rage");
+
+            skillbox6 = new Sprite(raget, new Vector2(120, 690), new Vector2(100, 100));
+
             skillboxes.Add(skillbox1);
             skillboxes.Add(skillbox2);
             skillboxes.Add(skillbox3);
             skillboxes.Add(skillbox4);
             skillboxes.Add(skillbox5);
             skillboxes.Add(skillbox6);
+            loadTexture = Content.Load<Texture2D>("SKILLBOX");
+
             eskillbox1 = new Sprite(loadTexture, new Vector2(690, 10), new Vector2(100, 100));
             eskillbox2 = new Sprite(loadTexture, new Vector2(580, 10), new Vector2(100, 100));
             eskillbox3 = new Sprite(loadTexture, new Vector2(690, 120), new Vector2(100, 100));
@@ -312,10 +334,12 @@ namespace PokeMen
             healthbar = new HealthBar(loadTexture, user,new Vector2 (10,400));
             enemyhealthbar = new HealthBar(loadTexture, enemy, new Vector2(690, 400));
 
-            enemyattack = new Text(font, "ATK :" + enemy.attack.ToString(), new Vector2(650, 450), Color.White);
-            enemydefense = new Text(font, "DEF :" + enemy.defense.ToString(), new Vector2(650, 400), Color.White);
-            userattack = new Text(font, "ATK :" + user.attack.ToString(), new Vector2(50, 450), Color.White);
-            userdefense = new Text(font, "DEF :" + user.defense.ToString(), new Vector2(50, 400), Color.White);
+            enemyattack = new Text(font, "ATK :" + enemy.attack.ToString(), new Vector2(600, 300), Color.White);
+            enemydefense = new Text(font, "DEF :" + enemy.defense.ToString(), new Vector2(600, 350), Color.White);
+            userattack = new Text(font, "ATK :" + user.attack.ToString(), new Vector2(175, 300), Color.White);
+            userdefense = new Text(font, "DEF :" + user.defense.ToString(), new Vector2(175, 350), Color.White);
+            enemydodge = new Text(font, "Dodge :" + enemy.dodge.ToString(), new Vector2(600, 250), Color.White);
+            userdodge = new Text(font, "Dodge :" + user.dodge.ToString(), new Vector2(175, 250), Color.White);
 
 
         }
@@ -351,11 +375,16 @@ namespace PokeMen
                     camera.NoFollow(playerSprite);
 
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.R))
-                {
-                    user.health -= 10;
+                enemyattack.textContent = "ATK :" + enemy.attack.ToString();
+                enemydefense.textContent = "DEF :" + enemy.defense.ToString();
+                userattack.textContent = "ATK :" + user.attack.ToString();
+                userdefense.textContent = "DEF :" + user.defense.ToString();
+                enemydodge.textContent = "Dodge :" + enemy.dodge.ToString();
+                userdodge.textContent = "Dodge :" + user.dodge.ToString();
 
-                }
+                battlesystem.Battling(user, enemy, battle, skillbox1, skillbox2, skillbox3, skillbox4, skillbox5, skillbox6, eskillbox6, eskillbox5, eskillbox4, eskillbox3, eskillbox2, eskillbox1,atkt,mirrort,storet,visiont,dodget,raget,loadTexture);
+                
+
             }
             else if (!battle && pManager.sign)
             {
@@ -428,13 +457,14 @@ namespace PokeMen
                 {
                     s.DrawSpriteNoZoom(_spriteBatch, s.spriteTexture);
                 }
-                healthbar.DrawHealth(_spriteBatch);
-                enemyhealthbar.DrawHealth(_spriteBatch);
+                healthbar.DrawHealth(_spriteBatch,user);
+                enemyhealthbar.DrawHealth(_spriteBatch,enemy);
                 userattack.DrawText(_spriteBatch);
                 enemyattack.DrawText(_spriteBatch);
                 userdefense.DrawText(_spriteBatch);
                 enemydefense.DrawText(_spriteBatch);
-
+                userdodge.DrawText(_spriteBatch);
+                enemydodge.DrawText(_spriteBatch);
 
             }
             else if ( !battle && pManager.sign)

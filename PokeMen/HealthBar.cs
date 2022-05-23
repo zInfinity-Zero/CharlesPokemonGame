@@ -4,13 +4,14 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PokeMen
+namespace CharlesPokemon
 {
     class HealthBar
     {
         private Texture2D texture;
         private Vector2 position;
         private Jokemon jokemon;
+        private Color color;
 
         public HealthBar()
         {
@@ -25,12 +26,16 @@ namespace PokeMen
         }
 
 
-        public void DrawHealth(SpriteBatch s)
+        public void DrawHealth(SpriteBatch s,Jokemon user)
         {
+            if (user.rage)
+                color = Color.Red;
+            else
+                color = Color.White;
             if (jokemon.health > 0)
             {
                 s.Begin();
-                s.Draw(texture, new Rectangle((int)position.X, (int)position.Y, jokemon.health, 20), Color.White);
+                s.Draw(texture, new Rectangle((int)position.X, (int)position.Y, jokemon.health, 20), color);
                 s.End();
             }
         }

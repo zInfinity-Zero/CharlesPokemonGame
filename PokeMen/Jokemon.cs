@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PokeMen
+namespace CharlesPokemon
 {
     class Jokemon : Sprite
     {
@@ -12,6 +12,14 @@ namespace PokeMen
         public int power { get; set; }
         public int defense { get; set; }
         public int attack { get; set; }
+
+        public bool rage { get; set; }
+
+        public int dodge { get; set; } = 0;
+
+        public bool vision { get; set; }
+
+        public bool mirror { get; set; }
 
         public Jokemon()
         {
@@ -27,10 +35,6 @@ namespace PokeMen
 
         
 
-        public void Catching()
-        {
-            //higher catchrate the easier to catch
-        }
 
 
 

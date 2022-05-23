@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokeMen
+namespace CharlesPokemon
 {
     class Camera
     {

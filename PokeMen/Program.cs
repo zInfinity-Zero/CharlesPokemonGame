@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PokeMen
+namespace CharlesPokemon
 {
     public static class Program
     {
