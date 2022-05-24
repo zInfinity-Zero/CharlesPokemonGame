@@ -20,13 +20,25 @@ namespace CharlesPokemon
         public bool goingDown;
         public bool moveright = false;
         public bool moveleft = false;
-        public Texture2D spriteTexture2 { get; set; }
+        public int coins { get; set; } = 100;
+
+        public int costume { get; set; } = 2;
+        public Texture2D spriteTextureb { get; set; }
         public Texture2D spriteTexture { get; set; }
 
-        public Player(Texture2D tex,Texture2D tex2, Vector2 pos, Vector2 size) : base(tex, pos, size)
+        public Texture2D spriteTexture2b { get; set; }
+        public Texture2D spriteTexture2 { get; set; }
+
+
+
+        public Player(Texture2D tex,Texture2D texb, Texture2D tex2, Texture2D tex2b, Vector2 pos, Vector2 size) : base(tex, pos, size)
         {
             spriteTexture = tex;
+            spriteTextureb = texb;
+
             spriteTexture2 = tex2;
+            spriteTexture2b = tex2b;
+
         }
 
     }

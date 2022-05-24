@@ -7,10 +7,13 @@ namespace CharlesPokemon
 {
     internal class PhysicsManager
     {
-        private float speed = 0.05f;
+        private float speed = 0.04f;
         private int collisionOffset = 3;
         public bool sign = false;
         public bool sign1text = false, sign2text = false, sign3text = false;
+        public bool boolean { get; set; } = false;
+
+        public int skinshopc { get; set; } = 0;
 
         public void checkCollision(Player p, Tree t)
         {
@@ -220,6 +223,50 @@ namespace CharlesPokemon
 
         }
 
+
+        public bool CheckCollisionDoor(Player p,Sprite door)
+        {
+            bool boolean = false;
+            Rectangle playerpos = new Rectangle((int)p.spritePosition.X, (int)p.spritePosition.Y, (int)p.spriteSize.X, (int)p.spriteSize.Y);
+            Rectangle doorpos = new Rectangle((int)door.spritePosition.X, (int)door.spritePosition.Y, (int)door.spriteSize.X, (int)door.spriteSize.Y);
+            if (playerpos.Intersects(doorpos))
+            {
+                boolean = true;
+            }
+            else
+                boolean = false;
+
+            return boolean;
+        }
+
+        public bool CheckCollisionSkinshop(Player p, Sprite shop2,Sprite shop3,Sprite shop4)
+        {
+            Rectangle playerpos = new Rectangle((int)p.spritePosition.X, (int)p.spritePosition.Y, (int)p.spriteSize.X, (int)p.spriteSize.Y);
+            Rectangle shop2pos = new Rectangle((int)shop2.spritePosition.X, (int)shop2.spritePosition.Y, (int)shop2.spriteSize.X, (int)shop2.spriteSize.Y);
+            Rectangle shop3pos = new Rectangle((int)shop3.spritePosition.X, (int)shop3.spritePosition.Y, (int)shop3.spriteSize.X, (int)shop3.spriteSize.Y);
+            Rectangle shop4pos = new Rectangle((int)shop4.spritePosition.X, (int)shop4.spritePosition.Y, (int)shop4.spriteSize.X, (int)shop4.spriteSize.Y);
+
+
+            if (playerpos.Intersects(shop2pos))
+            {
+                boolean = true;
+                skinshopc = 2;
+            }
+            else if (playerpos.Intersects(shop3pos))
+            {
+                boolean = true;
+                skinshopc = 3;
+            }
+            else if (playerpos.Intersects(shop4pos))
+            {
+                boolean = true;
+                skinshopc = 4;
+            }
+            else
+                boolean = false;
+
+            return boolean;
+        }
         public void goLeft(Player playerSprite)
         {
             playerSprite.spritePosition = new Vector2(playerSprite.spritePosition.X - speed, playerSprite.spritePosition.Y);

@@ -39,6 +39,11 @@ namespace CharlesPokemon
         private Tree[] treeRow2 = new Tree [6];
         private Tree[] treeRow3 = new Tree[14];
 
+        private Tree[] crateup = new Tree[16];
+        private Tree[] cratedown = new Tree[16];
+        private Tree[] crateleft = new Tree[16];
+        private Tree[] crateright = new Tree[16];
+
         private List<Tree> treeObjects = new List<Tree>();
         private List<Building> buildings = new List<Building>();
         private List<ReadableObject> signs = new List<ReadableObject>();
@@ -55,11 +60,18 @@ namespace CharlesPokemon
         private Texture2D dodget;
         private Texture2D raget;
 
+        private Texture2D player2left;
+        private Texture2D player2right;
+        private Texture2D player3left;
+        private Texture2D player3right;
+        private Texture2D player4left;
+        private Texture2D player4right;
 
 
         private InputManager iManager = new InputManager();
         private PhysicsManager pManager = new PhysicsManager();
         private Camera camera;
+        private MouseManager mManager = new MouseManager();
 
         public bool battle = false;
 
@@ -76,10 +88,16 @@ namespace CharlesPokemon
         private Text enemydefense;
         private Text userdodge;
         private Text enemydodge;
+        private Text playercoins;
 
         private Sprite textbox;
         private Sprite skillbox1, skillbox2, skillbox3, skillbox4, skillbox5, skillbox6;
         private Sprite eskillbox1, eskillbox2, eskillbox3, eskillbox4, eskillbox5, eskillbox6;
+        private Sprite door1, door2;
+        private Sprite buyingskin2, buyingskin3, buyingskin4;
+        private Sprite buyingskinpage;
+        private Sprite buyingskin2display, buyingskin3display, buyingskin4display;
+        private Sprite buybutton;
 
         private HealthBar healthbar;
         private HealthBar enemyhealthbar;
@@ -120,7 +138,13 @@ namespace CharlesPokemon
 
             playerright = Content.Load<Texture2D>("player-removebg-preview");
             playerleft = Content.Load<Texture2D>("player-removebg-preview(left");
-            playerSprite = new Player(playerleft, playerright,new Vector2(400, 400), new Vector2(30,50));
+            player2right = Content.Load<Texture2D>("player2right");
+            player2left = Content.Load<Texture2D>("player2left");
+            player3right = Content.Load<Texture2D>("player3right");
+            player3left = Content.Load<Texture2D>("player3left");
+            player4right = Content.Load<Texture2D>("player4right");
+            player4left = Content.Load<Texture2D>("player4left");
+            playerSprite = new Player(playerleft, playerright, player2left, player2right, new Vector2(400, 400), new Vector2(30,50));
 
             loadTexture = Content.Load<Texture2D>("House");
             home1 = new Building(loadTexture, new Vector2(200, 200), new Vector2(150, 150));
@@ -150,7 +174,7 @@ namespace CharlesPokemon
             postbox2 = new ReadableObject(loadTexture, new Vector2(465, 265), new Vector2(25, 35));
   
             loadTexture = Content.Load<Texture2D>("127595");
-            hole = new ReadableObject(loadTexture, new Vector2(250, 375), new Vector2(50, 50));
+            hole = new ReadableObject(loadTexture, new Vector2(360, 0), new Vector2(75, 75));
 
 
 
@@ -199,22 +223,19 @@ namespace CharlesPokemon
 
             }
 
-            posX = 0;
-            posY = 625;
-            xOffset = 475;
+    
 
             for (int i = 0; i < hedgeRow2.Length; i++)
             {
-                posX = (i * 20) + xOffset;
+                posX = (i * 20) + 475;
 
-                hedgeRow2[i] = new Tree(loadTexture, new Vector2(posX, posY), new Vector2(25, 25));
+                hedgeRow2[i] = new Tree(loadTexture, new Vector2(posX, 625), new Vector2(25, 25));
                 
 
             }
 
 
-            posX = 0;
-            posY = 0;
+            
             loadTexture = Content.Load<Texture2D>("Tree_Big");
 
             for (int i = 0; i < treeColumn1.Length; i++)
@@ -226,13 +247,11 @@ namespace CharlesPokemon
                 treeObjects.Add(treeColumn1[i]);
             }
 
-            posX = 0;
-            posY = 0;
-            xOffset = 740;
+
 
             for (int i = 0; i < treeColumn2.Length; i++)
             {
-                posX = xOffset;
+                posX = 740;
                 posY = (i * 80);
 
                 treeColumn2[i] = new Tree(loadTexture, new Vector2(posX, posY), new Vector2(60, 100));
@@ -241,56 +260,93 @@ namespace CharlesPokemon
 
             }
 
-            posX = 50;
-            posY = 0;
-            xOffset = 50;
 
             for (int i = 0; i < treeRow1.Length; i++)
             {
 
-                posX = xOffset + (i * 50);
+                posX = 50 + (i * 50);
 
-                treeRow1[i] = new Tree(loadTexture, new Vector2(posX, posY), new Vector2(60, 100));
+                treeRow1[i] = new Tree(loadTexture, new Vector2(posX, 0), new Vector2(60, 100));
                 treeObjects.Add(treeRow1[i]);
+                
 
 
             }
 
-            posX = 50;
-            posY = 0;
-            xOffset = 440;
 
             for (int i = 0; i < treeRow2.Length; i++)
             {
 
-                posX = xOffset + (i * 50);
+                posX = 440 + (i * 50);
 
-                treeRow2[i] = new Tree(loadTexture, new Vector2(posX, posY), new Vector2(60, 100));
+                treeRow2[i] = new Tree(loadTexture, new Vector2(posX, 0), new Vector2(60, 100));
                 treeObjects.Add(treeRow2[i]);
 
 
             }
 
-            posX = 50;
-            posY = 740;
-            xOffset = 475;
 
             for (int i = 0; i < treeRow3.Length; i++)
             {
 
                 posX = 50 + (i * 50);
 
-                treeRow3[i] = new Tree(loadTexture, new Vector2(posX, posY), new Vector2(60, 100));
+                treeRow3[i] = new Tree(loadTexture, new Vector2(posX, 740), new Vector2(60, 100));
                 treeObjects.Add(treeRow3[i]);
 
 
             }
+            loadTexture = Content.Load<Texture2D>("crates_study_x2");
+            for (int i = 0; i < crateleft.Length; i++)
+            {
+
+                posX = 0;
+                posY = (i * 50);
+                crateleft[i] = new Tree(loadTexture, new Vector2(posX, posY - 800), new Vector2(50, 50));
+                treeObjects.Add(crateleft[i]);
+            }
+            for (int i = 0; i < crateright.Length; i++)
+            {
+                posX = 750;
+                posY = (i * 50);
+
+                crateright[i] = new Tree(loadTexture, new Vector2(posX, posY - 800), new Vector2(50, 50));
+                treeObjects.Add(crateright[i]);
+
+
+            }
+            for (int i = 0; i < cratedown.Length; i++)
+            {
+
+                posX =   (i * 50);
+
+                cratedown[i] = new Tree(loadTexture, new Vector2(posX, -50), new Vector2(50, 50));
+                treeObjects.Add(cratedown[i]);
+
+
+            }
+            for (int i = 0; i < crateup.Length; i++)
+            {
+
+                posX =  (i * 50);
+
+                crateup[i] = new Tree(loadTexture, new Vector2(posX, -800), new Vector2(50, 50));
+                treeObjects.Add(crateup[i]);
+
+
+
+            }
+
 
             loadTexture = Content.Load<Texture2D>("msg_box_10-2-2-removebg-preview");
             textbox = new Sprite(loadTexture, new Vector2(0, 550), new Vector2(800, 200));
             sign1text = new Text(font, "This is sign 1", new Vector2(50, 650), Color.White);
             sign2text = new Text(font, "This is sign 2", new Vector2(50, 650), Color.White);
             sign3text = new Text(font, "This is sign 3", new Vector2(50, 650), Color.White);
+
+            buyingskinpage = new Sprite(loadTexture, new Vector2(0, 0), new Vector2(800, 800));
+
+            playercoins = new Text(font, "Coins:" + playerSprite.coins.ToString(), new Vector2(50, 650), Color.White);
 
             atkt = Content.Load<Texture2D>("ATK");
             skillbox1 = new Sprite(atkt, new Vector2(10,10), new Vector2(100, 100));
@@ -341,6 +397,17 @@ namespace CharlesPokemon
             enemydodge = new Text(font, "Dodge :" + enemy.dodge.ToString(), new Vector2(600, 250), Color.White);
             userdodge = new Text(font, "Dodge :" + user.dodge.ToString(), new Vector2(175, 250), Color.White);
 
+            door1 = new Sprite(loadTexture, new Vector2(292, 299), new Vector2(25, 50));
+            buyingskin2 = new Sprite(loadTexture, new Vector2(100, -600), new Vector2(100, 100));
+            buyingskin2display = new Sprite(player2left, new Vector2(100, 50), new Vector2(player2left.Width * 10, player2left.Height * 10));
+
+            buyingskin3 = new Sprite(loadTexture, new Vector2(350, -600), new Vector2(100, 100));
+            buyingskin3display = new Sprite(player3left, new Vector2(100, 50), new Vector2(player3left.Width * 10, player3left.Height * 10));
+
+            buyingskin4 = new Sprite(loadTexture, new Vector2(600, -600), new Vector2(100, 100));
+            buyingskin4display = new Sprite(player4left, new Vector2(100, 50), new Vector2(player4left.Width * 10, player4left.Height * 10));
+
+            buybutton = new Sprite(loadTexture, new Vector2(600, 600), new Vector2(75, 50));
 
         }
 
@@ -348,7 +415,8 @@ namespace CharlesPokemon
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (!battle && pManager.sign == false)
+
+            if (!battle && !pManager.sign && !pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
             {
                 camera.Follow(playerSprite);
                 iManager.checkKeyboard(playerSprite);
@@ -364,6 +432,11 @@ namespace CharlesPokemon
                
                 battle =  pManager.CheckCollision(playerSprite, hole,user,enemy);
                 pManager.CheckCollisionSign(playerSprite, sign1,sign2, sign3);
+                bool godoor1 = pManager.CheckCollisionDoor(playerSprite, door1);
+                if (godoor1)
+                {
+                    playerSprite.spritePosition = new Vector2(400, -400);
+                }
             }
             else if (battle)
             {
@@ -386,7 +459,7 @@ namespace CharlesPokemon
                 
 
             }
-            else if (!battle && pManager.sign)
+            else if (!battle && pManager.sign && !pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.X))
                 {
@@ -394,8 +467,32 @@ namespace CharlesPokemon
                 }
 
             }
+            else if (!battle && !pManager.sign && pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.X))
+                {
+                    pManager.boolean = false;
+                }
+                if (mManager.CheckClickonSprite(buybutton))
+                {
+                    pManager.boolean = false;
+                    playerSprite.coins -= 100;
+                }
+                if(Mouse.GetState().LeftButton == ButtonState.Pressed)
+                {
+                    Rectangle mrec = new Rectangle(Mouse.GetState().X, Mouse.GetState().Y, 1, 1);
+                    Rectangle srec = new Rectangle((int)buybutton.spritePosition.X,(int)buybutton.spritePosition.Y,(int)buybutton.spriteSize.X,(int)buybutton.spriteSize.Y);
+                    if (mrec.Intersects(srec))
+                    {
+                        pManager.boolean = false;
+                        playerSprite.coins -= 100;
+                    }
+                }
 
-            
+            }
+
+
+
 
 
             base.Update(gameTime);
@@ -403,7 +500,7 @@ namespace CharlesPokemon
 
         protected override void Draw(GameTime gameTime)
         {
-            if (!battle && !pManager.sign)
+            if (!battle && !pManager.sign && !pManager.CheckCollisionSkinshop(playerSprite,buyingskin2, buyingskin3, buyingskin4))/////
             {
                 GraphicsDevice.Clear(Color.DeepSkyBlue);
 
@@ -428,6 +525,9 @@ namespace CharlesPokemon
                 }
 
 
+                buyingskin2.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+                buyingskin3.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+                buyingskin4.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
 
                 home1.DrawSprite(_spriteBatch, home1.spriteTexture, camera);
                 home2.DrawSprite(_spriteBatch, home2.spriteTexture, camera);
@@ -438,12 +538,53 @@ namespace CharlesPokemon
                 postbox1.DrawSprite(_spriteBatch, postbox1.spriteTexture, camera);
                 postbox2.DrawSprite(_spriteBatch, postbox2.spriteTexture, camera);
                 hole.DrawSprite(_spriteBatch, hole.spriteTexture, camera);
-            
+                door1.DrawSprite(_spriteBatch, door1.spriteTexture, camera);
                 if (playerSprite.moveleft)
-                    playerSprite.DrawSprite(_spriteBatch, playerSprite.spriteTexture, camera);
+                {
+                    if (playerSprite.costume == 1)
+                    {
+                        playerSprite.spriteSize = new Vector2(playerleft.Width, playerleft.Height);
+                        playerSprite.DrawSprite(_spriteBatch, playerleft, camera);
+                    }
+                    else if (playerSprite.costume == 2)
+                    {
+                        playerSprite.spriteSize = new Vector2(player2left.Width, player2left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player2left, camera);
+                    }
+                    else if (playerSprite.costume == 3)
+                    {
+                        playerSprite.spriteSize = new Vector2(player3left.Width, player3left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player3left, camera);
+                    }
+                    else if (playerSprite.costume == 4)
+                    {
+                        playerSprite.spriteSize = new Vector2(player4left.Width, player4left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player4left, camera);
+                    }
+                }
                 else if (playerSprite.moveright)
-                    playerSprite.DrawSprite(_spriteBatch, playerSprite.spriteTexture2, camera);
-      
+                {
+                    if (playerSprite.costume == 1)
+                    {
+                        playerSprite.spriteSize = new Vector2(playerleft.Width, playerleft.Height);
+                        playerSprite.DrawSprite(_spriteBatch, playerright, camera);
+                    }
+                    else if (playerSprite.costume == 2)
+                    {
+                        playerSprite.spriteSize = new Vector2(player2left.Width, player2left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player2right, camera);
+                    }
+                    else if (playerSprite.costume == 3)
+                    {
+                        playerSprite.spriteSize = new Vector2(player3left.Width, player3left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player3right, camera);
+                    }
+                    else if (playerSprite.costume == 4)
+                    {
+                        playerSprite.spriteSize = new Vector2(player4left.Width, player4left.Height);
+                        playerSprite.DrawSprite(_spriteBatch, player4right, camera);
+                    }
+                }
 
 
             }
@@ -467,8 +608,31 @@ namespace CharlesPokemon
                 enemydodge.DrawText(_spriteBatch);
 
             }
-            else if ( !battle && pManager.sign)
+            else if ( !battle && pManager.sign && !pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
             {
+                foreach (Tree t in treeObjects)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+
+
+                foreach (Tree t in hedgeRow1)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+                foreach (Tree t in hedgeRow2)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+
+                foreach (Sprite f in flowerRow)
+                {
+                    f.DrawSprite(_spriteBatch, f.spriteTexture, camera);
+                }
+                buyingskin2.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+                buyingskin3.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+                buyingskin4.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+
                 home1.DrawSprite(_spriteBatch, home1.spriteTexture, camera);
                 home2.DrawSprite(_spriteBatch, home2.spriteTexture, camera);
                 lab.DrawSprite(_spriteBatch, lab.spriteTexture, camera);
@@ -497,6 +661,65 @@ namespace CharlesPokemon
                 }
 
             }
+            else if (!battle && !pManager.sign && pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
+            {
+                buyingskin2.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+                buyingskin3.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+
+                buyingskin4.DrawSprite(_spriteBatch, buyingskin2.spriteTexture, camera);
+
+
+                foreach (Tree t in treeObjects)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+
+
+                foreach (Tree t in hedgeRow1)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+                foreach (Tree t in hedgeRow2)
+                {
+                    t.DrawSprite(_spriteBatch, t.spriteTexture, camera);
+                }
+
+                foreach (Sprite f in flowerRow)
+                {
+                    f.DrawSprite(_spriteBatch, f.spriteTexture, camera);
+                }
+                home1.DrawSprite(_spriteBatch, home1.spriteTexture, camera);
+                home2.DrawSprite(_spriteBatch, home2.spriteTexture, camera);
+                lab.DrawSprite(_spriteBatch, lab.spriteTexture, camera);
+                sign1.DrawSprite(_spriteBatch, sign1.spriteTexture, camera);
+                sign2.DrawSprite(_spriteBatch, sign2.spriteTexture, camera);
+                sign3.DrawSprite(_spriteBatch, sign3.spriteTexture, camera);
+                postbox1.DrawSprite(_spriteBatch, postbox1.spriteTexture, camera);
+                postbox2.DrawSprite(_spriteBatch, postbox2.spriteTexture, camera);
+                hole.DrawSprite(_spriteBatch, hole.spriteTexture, camera);
+                buyingskinpage.DrawSpriteNoZoom(_spriteBatch, textbox.spriteTexture);
+
+                if (pManager.skinshopc == 2)
+                {
+                    buyingskin2display.DrawSpriteNoZoom(_spriteBatch, buyingskin2display.spriteTexture);
+                }
+                else if (pManager.skinshopc == 3)
+                {
+                    buyingskin3display.DrawSpriteNoZoom(_spriteBatch, buyingskin3display.spriteTexture);
+                }
+                else if (pManager.skinshopc == 4)
+                {
+                    buyingskin4display.DrawSpriteNoZoom(_spriteBatch, buyingskin4display.spriteTexture);
+                }
+                else
+                {
+                    buyingskin2display.DrawSpriteNoZoom(_spriteBatch, buyingskin2display.spriteTexture);
+
+                }
+                buybutton.DrawSpriteNoZoom(_spriteBatch, buybutton.spriteTexture);
+                playercoins.DrawText(_spriteBatch);
+            }
+
             base.Draw(gameTime);
         }
 
