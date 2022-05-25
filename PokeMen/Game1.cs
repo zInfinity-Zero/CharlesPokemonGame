@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using System;
+using System.Threading;
+
 using System.Collections.Generic;
 
 
@@ -415,7 +418,7 @@ namespace CharlesPokemon
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            playercoins.textContent = "Coins :" + playerSprite.coins;
             if (!battle && !pManager.sign && !pManager.CheckCollisionSkinshop(playerSprite, buyingskin2, buyingskin3, buyingskin4))
             {
                 camera.Follow(playerSprite);
@@ -472,10 +475,12 @@ namespace CharlesPokemon
                 if (Keyboard.GetState().IsKeyDown(Keys.X))
                 {
                     pManager.boolean = false;
+                    playerSprite.spritePosition = new Vector2(400, -400);
                 }
                 if (mManager.CheckClickonSprite(buybutton))
                 {
                     pManager.boolean = false;
+                    playerSprite.spritePosition = new Vector2(400, -400);
                     playerSprite.coins -= 100;
                 }
                 if(Mouse.GetState().LeftButton == ButtonState.Pressed)
@@ -484,6 +489,7 @@ namespace CharlesPokemon
                     Rectangle srec = new Rectangle((int)buybutton.spritePosition.X,(int)buybutton.spritePosition.Y,(int)buybutton.spriteSize.X,(int)buybutton.spriteSize.Y);
                     if (mrec.Intersects(srec))
                     {
+
                         pManager.boolean = false;
                         playerSprite.coins -= 100;
                     }

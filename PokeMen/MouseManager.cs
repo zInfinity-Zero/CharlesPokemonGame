@@ -22,10 +22,18 @@ namespace CharlesPokemon
                 if (mouserec.Intersects(srec))
                 {
                     click = true;
-                   
+                    
+                }
+                else
+                {
+                    click = false;
                 }
       
           
+            }
+            else
+            {
+                click = false;
             }
 
             return click;

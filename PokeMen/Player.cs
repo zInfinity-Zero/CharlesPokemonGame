@@ -20,7 +20,7 @@ namespace CharlesPokemon
         public bool goingDown;
         public bool moveright = false;
         public bool moveleft = false;
-        public int coins { get; set; } = 100;
+        public int coins { get; set; } = 500;
 
         public int costume { get; set; } = 2;
         public Texture2D spriteTextureb { get; set; }
